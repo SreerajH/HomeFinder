@@ -21,5 +21,6 @@ export interface Listing {
 export interface ListingFilters {
   search: string;
   type: PropertyType | 'All';
-  priceRange: [number, number];
+  /** [min, max] in rupees, inclusive. null means "no price filter" (full range). */
+  priceRange: [number, number] | null;
 }
