@@ -25,6 +25,10 @@ interface ListingDetailsDialogProps {
   onClose: () => void;
 }
 
+// "2026-10-18" -> "18 Oct 2026". timeZone UTC stops the date shifting by a day in some time zones.
+const dateFormatter = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+const formatDate = (isoDate: string) => dateFormatter.format(new Date(isoDate));
+
 function Fact({ label, value }: { label: string; value: string }) {
   return (
     <Box>
@@ -91,7 +95,7 @@ export default function ListingDetailsDialog({ listing, open, onClose }: Listing
         <Stack direction="row" spacing={0.5} alignItems="center" sx={{ color: 'text.secondary', mb: 2 }}>
           <PlaceOutlined sx={{ fontSize: 18 }} aria-hidden />
           <Typography variant="body2">
-            {listing.locality}, {listing.city}
+            {listing.locality}, {listing.city} · Listed {formatDate(listing.listedOn)}
           </Typography>
         </Stack>
 

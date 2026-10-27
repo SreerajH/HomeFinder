@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Box, Container, CssBaseline, Typography, useMediaQuery } from '@mui/material';
+import { Box, Container, CssBaseline, Stack, Typography, useMediaQuery } from '@mui/material';
 import { ThemeProvider, type PaletteMode } from '@mui/material/styles';
 import { createAppTheme } from './theme';
 import Header from './components/Header';
@@ -9,9 +9,11 @@ import ListingSkeleton from './components/ListingSkeleton';
 import ListingDetailsDialog from './components/ListingDetailsDialog';
 import EmptyState from './components/EmptyState';
 import ErrorState from './components/ErrorState';
+import SortSelect from './components/SortSelect';
 import { useListings } from './hooks/useListings';
 import { DEFAULT_FILTERS, filterListings, getPriceBounds } from './utils/filterListings';
-import type { Listing, ListingFilters } from './types/listing';
+import { sortListings } from './utils/sortListings';
+import type { Listing, ListingFilters, SortOption } from './types/listing';
 
 export default function App() {
   // Start from the OS preference; once the user clicks the toggle their choice wins
@@ -25,12 +27,16 @@ export default function App() {
 
   // 2. UI state: what the user has typed/selected
   const [filters, setFilters] = useState<ListingFilters>(DEFAULT_FILTERS);
+  const [sort, setSort] = useState<SortOption>('newest');
   const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   // 3. Derived data: recalculated only when its inputs change
   const priceBounds = useMemo(() => getPriceBounds(listings), [listings]);
-  const visibleListings = useMemo(() => filterListings(listings, filters), [listings, filters]);
+  const visibleListings = useMemo(
+    () => sortListings(filterListings(listings, filters), sort),
+    [listings, filters, sort],
+  );
 
   const updateFilters = (changes: Partial<ListingFilters>) => setFilters((prev) => ({ ...prev, ...changes }));
   const resetFilters = () => setFilters(DEFAULT_FILTERS);
@@ -71,9 +77,18 @@ export default function App() {
         />
 
         {!loading && !error && (
-          <Typography variant="body2" color="text.secondary" aria-live="polite" sx={{ mb: 2 }}>
-            Showing <strong>{visibleListings.length}</strong> of {listings.length} homes
-          </Typography>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            justifyContent="space-between"
+            alignItems={{ xs: 'stretch', sm: 'center' }}
+            spacing={1.5}
+            sx={{ mb: 2.5 }}
+          >
+            <Typography variant="body2" color="text.secondary" aria-live="polite">
+              Showing <strong>{visibleListings.length}</strong> of {listings.length} homes
+            </Typography>
+            <SortSelect value={sort} onChange={setSort} disabled={visibleListings.length < 2} />
+          </Stack>
         )}
 
         {renderResults()}

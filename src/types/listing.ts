@@ -15,7 +15,11 @@ export interface Listing {
   areaSqFt: number;
   imageUrl: string;
   description: string;
+  /** ISO date the listing went live, e.g. "2026-10-18". Used for "Newest first" sorting. */
+  listedOn: string;
 }
+
+export type SortOption = 'newest' | 'price-asc' | 'price-desc';
 
 /** Everything the filter bar controls, kept in one object so it can be reset in one go */
 export interface ListingFilters {

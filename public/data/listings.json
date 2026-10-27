@@ -10,7 +10,8 @@
     "bathrooms": 3,
     "areaSqFt": 1650,
     "imageUrl": "https://picsum.photos/seed/homefinder-1/800/600",
-    "description": "East-facing 3BHK on the 9th floor of a gated community, a 6-minute walk from Whitefield metro station. Two covered parking slots, clubhouse with pool and gym, and 24x7 power backup. Ready to move in."
+    "description": "East-facing 3BHK on the 9th floor of a gated community, a 6-minute walk from Whitefield metro station. Two covered parking slots, clubhouse with pool and gym, and 24x7 power backup. Ready to move in.",
+    "listedOn": "2026-10-18"
   },
   {
     "id": "hf-002",
@@ -23,7 +24,8 @@
     "bathrooms": 5,
     "areaSqFt": 3400,
     "imageUrl": "https://picsum.photos/seed/homefinder-2/800/600",
-    "description": "Independent 4BHK villa with a private lawn, home office and terrace deck. Part of a 60-villa enclave with walking trails and close to top international schools on Sarjapur Road."
+    "description": "Independent 4BHK villa with a private lawn, home office and terrace deck. Part of a 60-villa enclave with walking trails and close to top international schools on Sarjapur Road.",
+    "listedOn": "2026-09-02"
   },
   {
     "id": "hf-003",
@@ -36,7 +38,8 @@
     "bathrooms": 2,
     "areaSqFt": 980,
     "imageUrl": "https://picsum.photos/seed/homefinder-3/800/600",
-    "description": "Well-planned 2BHK minutes from the Rajiv Gandhi Infotech Park. Modular kitchen, balcony with hill views, and a society with children's play area and jogging track. Ideal first home for IT professionals."
+    "description": "Well-planned 2BHK minutes from the Rajiv Gandhi Infotech Park. Modular kitchen, balcony with hill views, and a society with children's play area and jogging track. Ideal first home for IT professionals.",
+    "listedOn": "2026-10-24"
   },
   {
     "id": "hf-004",
@@ -49,7 +52,8 @@
     "bathrooms": 4,
     "areaSqFt": 3100,
     "imageUrl": "https://picsum.photos/seed/homefinder-4/800/600",
-    "description": "Three-level villa on the slopes of Baner hill with a double-height living room and wraparound balconies. Quiet lane, yet close to Balewadi High Street cafés and the Mumbai–Bangalore highway."
+    "description": "Three-level villa on the slopes of Baner hill with a double-height living room and wraparound balconies. Quiet lane, yet close to Balewadi High Street cafés and the Mumbai–Bangalore highway.",
+    "listedOn": "2026-08-27"
   },
   {
     "id": "hf-005",
@@ -62,7 +66,8 @@
     "bathrooms": null,
     "areaSqFt": 1500,
     "imageUrl": "https://picsum.photos/seed/homefinder-5/800/600",
-    "description": "Clear-title NA plot in a gated layout with paved roads, underground drainage and street lighting. Rapidly developing area on the Pune–Ahmednagar highway."
+    "description": "Clear-title NA plot in a gated layout with paved roads, underground drainage and street lighting. Rapidly developing area on the Pune–Ahmednagar highway.",
+    "listedOn": "2026-10-09"
   },
   {
     "id": "hf-006",
@@ -75,7 +80,8 @@
     "bathrooms": 3,
     "areaSqFt": 1820,
     "imageUrl": "https://picsum.photos/seed/homefinder-6/800/600",
-    "description": "High-rise 3BHK with floor-to-ceiling windows overlooking the Financial District. Amenities include a rooftop infinity pool, co-working lounge and EV charging. 10 minutes to HITEC City."
+    "description": "High-rise 3BHK with floor-to-ceiling windows overlooking the Financial District. Amenities include a rooftop infinity pool, co-working lounge and EV charging. 10 minutes to HITEC City.",
+    "listedOn": "2026-10-21"
   },
   {
     "id": "hf-007",
@@ -88,7 +94,8 @@
     "bathrooms": 6,
     "areaSqFt": 5200,
     "imageUrl": "https://picsum.photos/seed/homefinder-7/800/600",
-    "description": "Premium 5BHK villa with a private pool, home theatre and lift. Located in one of Hyderabad's fastest-appreciating neighbourhoods, close to the Outer Ring Road."
+    "description": "Premium 5BHK villa with a private pool, home theatre and lift. Located in one of Hyderabad's fastest-appreciating neighbourhoods, close to the Outer Ring Road.",
+    "listedOn": "2026-09-14"
   },
   {
     "id": "hf-008",
@@ -101,7 +108,8 @@
     "bathrooms": null,
     "areaSqFt": 2400,
     "imageUrl": "https://picsum.photos/seed/homefinder-8/800/600",
-    "description": "HMDA-approved east-facing corner plot near the international airport. Layout has 40-ft roads, a park and water connections already in place."
+    "description": "HMDA-approved east-facing corner plot near the international airport. Layout has 40-ft roads, a park and water connections already in place.",
+    "listedOn": "2026-07-30"
   },
   {
     "id": "hf-009",
@@ -114,7 +122,8 @@
     "bathrooms": 2,
     "areaSqFt": 1120,
     "imageUrl": "https://picsum.photos/seed/homefinder-9/800/600",
-    "description": "Cross-ventilated 2BHK on Old Mahabalipuram Road with easy access to the IT corridor. Rainwater harvesting, solar-powered common areas and a well-maintained society."
+    "description": "Cross-ventilated 2BHK on Old Mahabalipuram Road with easy access to the IT corridor. Rainwater harvesting, solar-powered common areas and a well-maintained society.",
+    "listedOn": "2026-10-12"
   },
   {
     "id": "hf-010",
@@ -127,7 +136,8 @@
     "bathrooms": 4,
     "areaSqFt": 2800,
     "imageUrl": "https://picsum.photos/seed/homefinder-10/800/600",
-    "description": "Chettinad-inspired villa with a central open courtyard, Athangudi tile flooring and a short drive to the beach. A calm weekend-home feel with city conveniences nearby."
+    "description": "Chettinad-inspired villa with a central open courtyard, Athangudi tile flooring and a short drive to the beach. A calm weekend-home feel with city conveniences nearby.",
+    "listedOn": "2026-09-25"
   },
   {
     "id": "hf-011",
@@ -140,7 +150,8 @@
     "bathrooms": 2,
     "areaSqFt": 890,
     "imageUrl": "https://picsum.photos/seed/homefinder-11/800/600",
-    "description": "Lake-facing 2BHK in Hiranandani Gardens with Italian marble flooring. Walking distance to schools, Galleria mall and the Powai lakefront promenade."
+    "description": "Lake-facing 2BHK in Hiranandani Gardens with Italian marble flooring. Walking distance to schools, Galleria mall and the Powai lakefront promenade.",
+    "listedOn": "2026-10-26"
   },
   {
     "id": "hf-012",
@@ -153,6 +164,7 @@
     "bathrooms": 1,
     "areaSqFt": 610,
     "imageUrl": "https://picsum.photos/seed/homefinder-12/800/600",
-    "description": "Efficient 1BHK in a new tower near Ghodbunder Road, with a balcony overlooking the Yeoor hills. Society offers gym, pool and round-the-clock security."
+    "description": "Efficient 1BHK in a new tower near Ghodbunder Road, with a balcony overlooking the Yeoor hills. Society offers gym, pool and round-the-clock security.",
+    "listedOn": "2026-10-03"
   }
 ]

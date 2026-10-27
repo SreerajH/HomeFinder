@@ -14,6 +14,7 @@ export const testListings: Listing[] = [
     areaSqFt: 1100,
     imageUrl: 'https://picsum.photos/seed/test-1/800/600',
     description: 'A bright apartment overlooking Hebbal lake.',
+    listedOn: '2026-10-01',
   },
   {
     id: 't-2',
@@ -27,6 +28,7 @@ export const testListings: Listing[] = [
     areaSqFt: 3000,
     imageUrl: 'https://picsum.photos/seed/test-2/800/600',
     description: 'A spacious villa with views across Baner hill.',
+    listedOn: '2026-09-15',
   },
   {
     id: 't-3',
@@ -40,5 +42,6 @@ export const testListings: Listing[] = [
     areaSqFt: 2400,
     imageUrl: 'https://picsum.photos/seed/test-3/800/600',
     description: 'An approved corner plot near the airport.',
+    listedOn: '2026-10-20',
   },
 ];

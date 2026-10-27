@@ -83,6 +83,26 @@ describe('App', () => {
     expect(screen.getByRole('textbox', { name: /search/i })).toHaveValue('');
   });
 
+  it('sorts the cards when a sort option is chosen', async () => {
+    fetchMock.mockResolvedValue(okResponse());
+    const user = userEvent.setup();
+    render(<App />);
+    await screen.findAllByRole('article');
+
+    // Read the titles in the order they appear on screen
+    const cardTitles = () =>
+      screen.getAllByRole('article').map((card) => within(card).getByRole('heading', { level: 3 }).textContent);
+
+    // Default is newest first (fixtures: Plot 20 Oct, Apartment 1 Oct, Villa 15 Sep)
+    expect(cardTitles()).toEqual(['Corner Plot', 'Lakeview Apartment', 'Hilltop Villa']);
+
+    // An MUI Select is not a native <select>: open it like a user would, then pick an option
+    await user.click(screen.getByRole('combobox', { name: /sort by/i }));
+    await user.click(screen.getByRole('option', { name: /price: high to low/i }));
+
+    expect(cardTitles()).toEqual(['Hilltop Villa', 'Lakeview Apartment', 'Corner Plot']);
+  });
+
   it('opens the details dialog for the listing that was clicked', async () => {
     fetchMock.mockResolvedValue(okResponse());
     const user = userEvent.setup();

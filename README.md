@@ -27,6 +27,7 @@ Built as a practice project to show **React + TypeScript**, **Material UI**, **R
   - Property type select (All, Apartment, Villa, Plot)
   - Price range slider, from the cheapest to the most expensive listing
   - Reset filters button (disabled when nothing is filtered)
+- **Sorting**: newest first, price low to high, or price high to low (MUI Select)
 - **Responsive listings grid**: 1 column on mobile, 2 on tablet, 3 on desktop
 - **Listing cards** with image, price in INR (`₹75,00,000`), title, location, beds, baths, area and a type chip
 - **Details dialog** with full facts, price per sq ft and a description (full screen on phones)
@@ -51,6 +52,7 @@ src/
     ListingSkeleton.tsx     # loading placeholders
     EmptyState.tsx
     ErrorState.tsx
+    SortSelect.tsx          # "Sort by" dropdown
   hooks/
     useListings.ts          # fetch + loading/error state + refetch
   services/
@@ -60,6 +62,7 @@ src/
   utils/
     formatPrice.ts          # INR formatting (pure)
     filterListings.ts       # filtering logic (pure)
+    sortListings.ts         # sorting logic (pure)
     *.test.ts               # unit tests sit next to the code they test
   test/
     setup.ts                # adds jest-dom matchers to Vitest
@@ -103,6 +106,7 @@ What is covered:
   - a failed request shows the error Alert, and Retry calls `fetch` again
   - typing in the search box filters the cards
   - the empty state appears when nothing matches
+  - choosing a sort option reorders the cards
   - "View details" opens the dialog for the right listing
 
 ## Notes
