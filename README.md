@@ -109,6 +109,21 @@ What is covered:
   - choosing a sort option reorders the cards
   - "View details" opens the dialog for the right listing
 
+## Deploying to Vercel
+
+The repo includes a [`vercel.json`](vercel.json), so deploying needs no extra settings:
+
+1. Go to [vercel.com/new](https://vercel.com/new) and import this GitHub repository.
+2. Keep the detected defaults and click **Deploy**.
+
+What the config does:
+
+- Installs with `npm ci` (exact versions from `package-lock.json`).
+- Builds with `npm test && npm run build`, so **a failing test stops the deploy**.
+- Serves the static `dist/` folder. Hashed JS/CSS files in `/assets` are cached for a year; `/data/listings.json` is always revalidated so data edits show up immediately.
+
+Every push to `main` redeploys automatically, and pull requests get their own preview URL.
+
 ## Notes
 
 - Images come from [picsum.photos](https://picsum.photos) with fixed seeds, so they are stable placeholders rather than real property photos.
