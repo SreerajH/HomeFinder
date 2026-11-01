@@ -16,18 +16,19 @@ Built as a practice project to show **React + TypeScript**, **Material UI**, **R
 | UI | React 18, TypeScript (strict) |
 | Components & styling | Material UI v6 (`@mui/material`, `@mui/icons-material`), Emotion |
 | Data | `fetch()` against a mock REST endpoint (`/public/data/listings.json`) |
-| State | React hooks (`useState`, `useEffect`, `useMemo`) + one custom hook. No Redux. |
+| State | Redux Toolkit + React-Redux for shared state (filters, saved listings); React hooks (`useState`, `useEffect`, `useMemo`) and one custom hook for local state and data fetching |
 | Testing | Vitest, React Testing Library, `@testing-library/user-event`, jsdom |
 
 ## Features
 
-- **App bar** with the app name and a light/dark mode toggle (starts from your OS setting)
+- **App bar** with the app name, a "Saved (n)" count and a light/dark mode toggle (starts from your OS setting)
 - **Filter bar**
   - Search by title or city
   - Property type select (All, Apartment, Villa, Plot)
   - Price range slider, from the cheapest to the most expensive listing
   - Reset filters button (disabled when nothing is filtered)
 - **Sorting**: newest first, price low to high, or price high to low (MUI Select)
+- **Saved listings**: a heart button on every card saves or unsaves it; saved listings are kept in `localStorage` so they survive a reload
 - **Responsive listings grid**: 1 column on mobile, 2 on tablet, 3 on desktop
 - **Listing cards** with image, price in INR (`₹75,00,000`), title, location, beds, baths, area and a type chip
 - **Details dialog** with full facts, price per sq ft and a description (full screen on phones)
@@ -53,6 +54,12 @@ src/
     EmptyState.tsx
     ErrorState.tsx
     SortSelect.tsx          # "Sort by" dropdown
+  store/
+    index.ts                # configureStore, RootState/AppDispatch types, localStorage sync
+    filtersSlice.ts         # search, type, price range, reset
+    savedSlice.ts           # save / unsave a listing
+    persistSaved.ts         # read/write saved ids in localStorage
+    hooks.ts                # typed useAppSelector / useAppDispatch
   hooks/
     useListings.ts          # fetch + loading/error state + refetch
   services/
@@ -65,6 +72,7 @@ src/
     sortListings.ts         # sorting logic (pure)
     *.test.ts               # unit tests sit next to the code they test
   test/
+    renderWithProviders.tsx # renders with a fresh Redux store per test
     setup.ts                # adds jest-dom matchers to Vitest
     fixtures.ts             # small test data set
   theme.ts                  # custom MUI theme (light + dark)
@@ -99,6 +107,7 @@ npm run test:watch # re-run tests when files change
 
 What is covered:
 
+- `filtersSlice.test.ts`: each filter action updates the state, and `resetFilters` restores the defaults
 - `formatPrice.test.ts`: `7500000` becomes `₹75,00,000`, plus lakh/crore short forms
 - `filterListings.test.ts`: filtering by search text, type and price range, and all three combined
 - `App.test.tsx` (with `fetch` mocked by `vi.fn`):
@@ -107,6 +116,7 @@ What is covered:
   - typing in the search box filters the cards
   - the empty state appears when nothing matches
   - choosing a sort option reorders the cards
+  - saving a listing updates the heart, the "Saved (n)" count, the store and localStorage
   - "View details" opens the dialog for the right listing
 
 ## Deploying to Vercel

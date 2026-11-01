@@ -18,19 +18,21 @@ import RestartAltRounded from '@mui/icons-material/RestartAltRounded';
 import type { ListingFilters, PropertyType } from '../types/listing';
 import { formatPrice, formatPriceShort } from '../utils/formatPrice';
 import { hasActiveFilters } from '../utils/filterListings';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { resetFilters, selectFilters, setPriceRange, setSearch, setType } from '../store/filtersSlice';
 
 const TYPE_OPTIONS: Array<PropertyType | 'All'> = ['All', 'Apartment', 'Villa', 'Plot'];
 const PRICE_STEP = 100_000; // ₹1 lakh
 
 interface FilterBarProps {
-  filters: ListingFilters;
   priceBounds: [number, number];
   disabled?: boolean;
-  onChange: (changes: Partial<ListingFilters>) => void;
-  onReset: () => void;
 }
 
-export default function FilterBar({ filters, priceBounds, disabled = false, onChange, onReset }: FilterBarProps) {
+export default function FilterBar({ priceBounds, disabled = false }: FilterBarProps) {
+  // Read filter values from the Redux store, and dispatch actions to change them
+  const filters = useAppSelector(selectFilters);
+  const dispatch = useAppDispatch();
   const [minPrice, maxPrice] = priceBounds;
   const priceValue = filters.priceRange ?? priceBounds;
 
@@ -47,7 +49,7 @@ export default function FilterBar({ filters, priceBounds, disabled = false, onCh
             label="Search"
             placeholder="Title or city"
             value={filters.search}
-            onChange={(event) => onChange({ search: event.target.value })}
+            onChange={(event) => dispatch(setSearch(event.target.value))}
             fullWidth
             slotProps={{
               input: {
@@ -69,7 +71,7 @@ export default function FilterBar({ filters, priceBounds, disabled = false, onCh
               id="property-type"
               label="Property type"
               value={filters.type}
-              onChange={(event) => onChange({ type: event.target.value as ListingFilters['type'] })}
+              onChange={(event) => dispatch(setType(event.target.value as ListingFilters['type']))}
             >
               {TYPE_OPTIONS.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -97,7 +99,7 @@ export default function FilterBar({ filters, priceBounds, disabled = false, onCh
               max={maxPrice}
               step={PRICE_STEP}
               disabled={disabled || minPrice === maxPrice}
-              onChange={(_event, value) => onChange({ priceRange: value as [number, number] })}
+              onChange={(_event, value) => dispatch(setPriceRange(value as [number, number]))}
               valueLabelDisplay="auto"
               valueLabelFormat={formatPriceShort}
               getAriaValueText={formatPrice}
@@ -111,7 +113,7 @@ export default function FilterBar({ filters, priceBounds, disabled = false, onCh
             variant="outlined"
             fullWidth
             startIcon={<RestartAltRounded />}
-            onClick={onReset}
+            onClick={() => dispatch(resetFilters())}
             disabled={!hasActiveFilters(filters)}
             sx={{ height: { xs: 44, md: 56 }, whiteSpace: 'nowrap' }}
           >

@@ -1,7 +1,8 @@
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
 import { testListings } from './test/fixtures';
+import { renderWithProviders } from './test/renderWithProviders';
 
 // Fake versions of the Response object fetch() resolves with
 const okResponse = () => ({ ok: true, status: 200, json: async () => testListings });
@@ -22,7 +23,7 @@ describe('App', () => {
 
   it('shows skeletons while loading, then renders listing cards', async () => {
     fetchMock.mockResolvedValue(okResponse());
-    render(<App />);
+    renderWithProviders(<App />);
 
     // Straight after the first render the request is still in flight
     expect(screen.getAllByTestId('listing-skeleton').length).toBeGreaterThan(0);
@@ -38,7 +39,7 @@ describe('App', () => {
   it('shows the error Alert when fetch fails, and Retry calls fetch again', async () => {
     fetchMock.mockResolvedValueOnce(serverErrorResponse()).mockResolvedValueOnce(okResponse());
     const user = userEvent.setup();
-    render(<App />);
+    renderWithProviders(<App />);
 
     const alert = await screen.findByRole('alert');
     expect(alert).toHaveTextContent(/couldn't load listings/i);
@@ -55,7 +56,7 @@ describe('App', () => {
   it('filters the cards as the user types in the search box', async () => {
     fetchMock.mockResolvedValue(okResponse());
     const user = userEvent.setup();
-    render(<App />);
+    renderWithProviders(<App />);
     await screen.findAllByRole('article');
 
     await user.type(screen.getByRole('textbox', { name: /search/i }), 'pune');
@@ -69,7 +70,7 @@ describe('App', () => {
   it('shows the empty state when nothing matches, and can clear the filters', async () => {
     fetchMock.mockResolvedValue(okResponse());
     const user = userEvent.setup();
-    render(<App />);
+    renderWithProviders(<App />);
     await screen.findAllByRole('article');
 
     await user.type(screen.getByRole('textbox', { name: /search/i }), 'atlantis');
@@ -86,7 +87,7 @@ describe('App', () => {
   it('sorts the cards when a sort option is chosen', async () => {
     fetchMock.mockResolvedValue(okResponse());
     const user = userEvent.setup();
-    render(<App />);
+    renderWithProviders(<App />);
     await screen.findAllByRole('article');
 
     // Read the titles in the order they appear on screen
@@ -106,7 +107,7 @@ describe('App', () => {
   it('opens the details dialog for the listing that was clicked', async () => {
     fetchMock.mockResolvedValue(okResponse());
     const user = userEvent.setup();
-    render(<App />);
+    renderWithProviders(<App />);
     await screen.findAllByRole('article');
 
     // Click the second card's button, so we know the dialog isn't just showing the first listing
@@ -120,5 +121,32 @@ describe('App', () => {
 
     await user.click(within(dialog).getByRole('button', { name: /^close$/i }));
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+  });
+
+  it('saves a listing: updates the heart, the header count, the store and localStorage', async () => {
+    fetchMock.mockResolvedValue(okResponse());
+    const user = userEvent.setup();
+    const { store } = renderWithProviders(<App />);
+    await screen.findAllByRole('article');
+
+    expect(screen.getByText('Saved (0)')).toBeInTheDocument();
+
+    const heart = screen.getByRole('button', { name: /^save hilltop villa$/i });
+    expect(heart).toHaveAttribute('aria-pressed', 'false');
+
+    await user.click(heart);
+
+    // The UI updated everywhere that reads this state...
+    expect(screen.getByText('Saved (1)')).toBeInTheDocument();
+    const savedHeart = screen.getByRole('button', { name: /remove hilltop villa from saved/i });
+    expect(savedHeart).toHaveAttribute('aria-pressed', 'true');
+    // ...because the Redux store changed, and the change was persisted
+    expect(store.getState().saved.ids).toEqual(['t-2']);
+    expect(JSON.parse(localStorage.getItem('homefinder:saved') ?? '[]')).toEqual(['t-2']);
+
+    // Clicking again unsaves it
+    await user.click(savedHeart);
+    expect(screen.getByText('Saved (0)')).toBeInTheDocument();
+    expect(store.getState().saved.ids).toEqual([]);
   });
 });

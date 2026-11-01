@@ -11,9 +11,11 @@ import EmptyState from './components/EmptyState';
 import ErrorState from './components/ErrorState';
 import SortSelect from './components/SortSelect';
 import { useListings } from './hooks/useListings';
-import { DEFAULT_FILTERS, filterListings, getPriceBounds } from './utils/filterListings';
+import { filterListings, getPriceBounds } from './utils/filterListings';
 import { sortListings } from './utils/sortListings';
-import type { Listing, ListingFilters, SortOption } from './types/listing';
+import { useAppDispatch, useAppSelector } from './store/hooks';
+import { resetFilters, selectFilters } from './store/filtersSlice';
+import type { Listing, SortOption } from './types/listing';
 
 export default function App() {
   // Start from the OS preference; once the user clicks the toggle their choice wins
@@ -25,8 +27,9 @@ export default function App() {
   // 1. Data: the custom hook owns fetching and request state
   const { listings, loading, error, refetch } = useListings();
 
-  // 2. UI state: what the user has typed/selected
-  const [filters, setFilters] = useState<ListingFilters>(DEFAULT_FILTERS);
+  // 2. Shared state lives in Redux (filters, saved listings); purely local UI state stays in useState
+  const filters = useAppSelector(selectFilters);
+  const dispatch = useAppDispatch();
   const [sort, setSort] = useState<SortOption>('newest');
   const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -38,9 +41,6 @@ export default function App() {
     [listings, filters, sort],
   );
 
-  const updateFilters = (changes: Partial<ListingFilters>) => setFilters((prev) => ({ ...prev, ...changes }));
-  const resetFilters = () => setFilters(DEFAULT_FILTERS);
-
   const openDetails = (listing: Listing) => {
     setSelectedListing(listing);
     setDialogOpen(true);
@@ -49,7 +49,7 @@ export default function App() {
   const renderResults = () => {
     if (loading) return <ListingSkeleton />;
     if (error) return <ErrorState message={error} onRetry={refetch} />;
-    if (visibleListings.length === 0) return <EmptyState onReset={resetFilters} />;
+    if (visibleListings.length === 0) return <EmptyState onReset={() => dispatch(resetFilters())} />;
     return <ListingGrid listings={visibleListings} onViewDetails={openDetails} />;
   };
 
@@ -68,13 +68,7 @@ export default function App() {
           </Typography>
         </Box>
 
-        <FilterBar
-          filters={filters}
-          priceBounds={priceBounds}
-          disabled={loading || Boolean(error)}
-          onChange={updateFilters}
-          onReset={resetFilters}
-        />
+        <FilterBar priceBounds={priceBounds} disabled={loading || Boolean(error)} />
 
         {!loading && !error && (
           <Stack

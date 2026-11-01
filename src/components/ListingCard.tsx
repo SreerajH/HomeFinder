@@ -1,4 +1,8 @@
-import { Box, Button, Card, CardActions, CardContent, CardMedia, Chip, Stack, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, CardMedia, Chip, IconButton, Stack, Tooltip, Typography } from '@mui/material';
+import FavoriteBorderRounded from '@mui/icons-material/FavoriteBorderRounded';
+import FavoriteRounded from '@mui/icons-material/FavoriteRounded';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { saveListing, selectIsSaved, unsaveListing } from '../store/savedSlice';
 import BedOutlined from '@mui/icons-material/BedOutlined';
 import BathtubOutlined from '@mui/icons-material/BathtubOutlined';
 import SquareFootOutlined from '@mui/icons-material/SquareFootOutlined';
@@ -23,7 +27,10 @@ function Stat({ icon, children }: { icon: React.ReactNode; children: React.React
 }
 
 export default function ListingCard({ listing, onViewDetails }: ListingCardProps) {
-  const { title, city, locality, type, price, bedrooms, bathrooms, areaSqFt, imageUrl } = listing;
+  const { id, title, city, locality, type, price, bedrooms, bathrooms, areaSqFt, imageUrl } = listing;
+  const isSaved = useAppSelector((state) => selectIsSaved(state, id));
+  const dispatch = useAppDispatch();
+  const saveLabel = isSaved ? `Remove ${title} from saved` : `Save ${title}`;
 
   return (
     <Card
@@ -56,6 +63,24 @@ export default function ListingCard({ listing, onViewDetails }: ListingCardProps
             boxShadow: 1,
           }}
         />
+        <Tooltip title={isSaved ? 'Remove from saved' : 'Save'}>
+          <IconButton
+            aria-label={saveLabel}
+            aria-pressed={isSaved}
+            onClick={() => dispatch(isSaved ? unsaveListing(id) : saveListing(id))}
+            sx={{
+              position: 'absolute',
+              top: 8,
+              right: 8,
+              bgcolor: 'background.paper',
+              boxShadow: 1,
+              color: isSaved ? 'error.main' : 'text.secondary',
+              '&:hover': { bgcolor: 'background.paper', color: 'error.main' },
+            }}
+          >
+            {isSaved ? <FavoriteRounded /> : <FavoriteBorderRounded />}
+          </IconButton>
+        </Tooltip>
       </Box>
 
       <CardContent sx={{ flexGrow: 1, pb: 1 }}>
